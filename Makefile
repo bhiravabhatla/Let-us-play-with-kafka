@@ -15,6 +15,7 @@ provision:
 	vagrant up
 
 install-confluent-platform:
+	/usr/local/opt/ansible@6/bin/ansible-galaxy install confluent.platform
 	ANSIBLE_PYTHON_INTERPRETER=/bin/python3 ANSIBLE_HOST_KEY_CHECKING=False /usr/local/opt/ansible@6/bin/ansible-playbook -i hosts.yml -v all.yml
 
 create-topic/%:
