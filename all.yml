@@ -8,5 +8,14 @@
     - name: Install python3 on all nodes
       include_tasks: tasks/install_python3.yml
 
+- name: Docker Machine Provision
+  hosts: kafka_broker[2]
+  tasks:
+    - import_role:
+        name: ldap-docker-setup
+
 - name: include collection
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   import_playbook: confluent.platform.all
+

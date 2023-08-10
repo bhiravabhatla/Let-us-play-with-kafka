@@ -1,0 +1,41 @@
+---
+- name: Install and Configure Docker
+  become: yes
+  block:
+    - include_role:
+        name: ansible-role-docker
+      vars:
+        docker_compose_version: "1.29.2"
+
+- name: Creates Required Directories
+  become: yes
+  file:
+    path: "{{ data_dir }}"
+    state: directory
+    owner: "root"
+    group: "root"
+    mode: 0755
+
+- name: Copy Required Files for LDAP setup
+  become: yes
+  copy:
+    src: "{{ item }}"
+    dest: "{{ data_dir }}/{{item}}"
+    mode: 0755
+    owner: "root"
+    group: "root"
+  with_items:
+    - docker-compose.yml
+    - ldap_users
+
+- name: Start LDAP
+  shell:
+    cmd: /usr/local/bin/docker-compose up -d
+    chdir: "{{ data_dir }}"
+
+- name: Install LDAP client library
+  become: yes
+  yum:
+    name:
+      - openldap-clients
+    state: present

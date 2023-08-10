@@ -16,7 +16,7 @@ provision:
 
 install-confluent-platform:
 	/usr/local/opt/ansible@6/bin/ansible-galaxy install confluent.platform
-	ANSIBLE_PYTHON_INTERPRETER=/bin/python3 ANSIBLE_HOST_KEY_CHECKING=False /usr/local/opt/ansible@6/bin/ansible-playbook -i hosts.yml -v all.yml
+	ANSIBLE_PYTHON_INTERPRETER=/usr/bin/python3 ANSIBLE_HOST_KEY_CHECKING=False /usr/local/opt/ansible@6/bin/ansible-playbook -i hosts.yml -v all.yml
 
 create-topic/%:
 	$(KAFKA_TOPICS) --topic $(@F) --create --partitions 3 --replication-factor 3
